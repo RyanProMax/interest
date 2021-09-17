@@ -1,0 +1,42 @@
+{
+  "name": "interest",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Record every interesting case",
+  "author": "Ryan",
+  "license": "MIT",
+  "keywords": [
+    "frontend",
+    "interest",
+    "interesting",
+    "case",
+    "react",
+    "next",
+    "study"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ryan-zyy/interest.git",
+    "branch": "main",
+    "platform": "github"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "export": "npm run build && next export"
+  },
+  "dependencies": {
+    "less": "^4.1.1",
+    "less-loader": "^10.0.1",
+    "next": "11.1.2",
+    "next-with-less": "^1.0.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
+  },
+  "devDependencies": {
+    "eslint": "7.32.0",
+    "eslint-config-next": "11.1.2"
+  }
+}
