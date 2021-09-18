@@ -1,0 +1,65 @@
+.interest {
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    padding: 0 100px;
+    border-bottom: 1px solid #dbdbdb;
+    background-color: #fff;
+
+    &__logo {
+      font-size: 32px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.25s;
+
+      &:hover {
+        color: @primary-color;
+      }
+    }
+
+    &__navigator {
+      &-item {
+        position: relative;
+        display: inline-block;
+        height: 70px;
+        line-height: 70px;
+        padding: 0 20px;
+        font-size: 18px;
+        color: #606266;
+        cursor: pointer;
+        transition: all 0.25s;
+
+        &::after {
+          position: absolute;
+          content: '';
+          height: 4px;
+          bottom: 0;
+          left: 50%;
+          width: 0;
+          background-color: @primary-color;
+          transition: all 0.25s;
+        }
+
+        &:hover {
+          color: @primary-color;
+        }
+
+        &:hover::after {
+          transform: translateX(-20px);
+          width: 40px;
+        }
+
+        &--active {
+          color: @primary-color;
+
+          &::after {
+            transform: translateX(-20px);
+            width: 40px;
+          }
+        }
+      }
+    }
+  }
+}
