@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Upload, message } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { generateBlobURL } from './utils';
 
 function getBase64(img, callback) {
 	const reader = new FileReader();
@@ -33,11 +34,15 @@ export default function Avatar({ onChange }) {
 			return;
 		}
 		if (info.file.status === 'done') {
-			getBase64(info.file.originFileObj, imageUrl => {
+			/* getBase64(info.file.originFileObj, imageUrl => {
 				info.file.imageUrl = imageUrl;
 				setLoading(false);
 				setUrl(imageUrl);
-			});
+			}); */
+			const blobURL = generateBlobURL(info.file.originFileObj);
+			info.file.imageUrl = blobURL;
+			setLoading(false);
+			setUrl(blobURL);
 		}
 		onChange(info);
 	};
