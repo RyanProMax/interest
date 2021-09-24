@@ -23,15 +23,32 @@ a {
 	.app-content {
 		margin: 20px auto;
 		max-width: 1200px;
-		padding: 20px 30px;
+		padding: 40px 80px;
 		background-color: #fff;
 		border-radius: 2px;
 		box-shadow: @box-shadow;
 
 		&__title {
+			font-family: Georgia;
+			margin-bottom: 20px;
+			padding-bottom: 10px;
+			font-size: 36px;
+			border-bottom: 1px solid #efefef;
+		}
+
+		&__description {
 			margin-bottom: 50px;
-			font-weight: bold;
-			text-align: center;
+			list-style: none;
+			padding-left: 0;
+			color: #999;
+
+			&-item {
+				margin-bottom: 12px;
+
+				&:first-child {
+					color: #333;
+				}
+			}
 		}
 	}
 }
