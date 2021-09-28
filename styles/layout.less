@@ -1,66 +1,93 @@
 .interest {
-	&-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		height: 70px;
-		padding: 0 100px;
-		border-bottom: 1px solid #dbdbdb;
-		background-color: #fff;
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    padding: 0 60px;
+    border-bottom: 1px solid #dbdbdb;
+    background-color: #fff;
 
-		&__logo {
-			font-size: 32px;
-			font-weight: bold;
-			cursor: pointer;
-			transition: color 0.25s;
+    &__logo {
+      height: 70px;
+      line-height: 70px;
+      cursor: pointer;
+    }
 
-			&:hover {
-				color: @primary-color;
-			}
-		}
+    &__navigator {
+      &-item {
+        font-family: Georgia;
+        position: relative;
+        display: inline-block;
+        height: 70px;
+        line-height: 70px;
+        padding: 0 20px;
+        font-size: 18px;
+        color: #999;
+        cursor: pointer;
+        transition: all 0.25s;
 
-		&__navigator {
-			&-item {
-				font-family: Georgia;
-				position: relative;
-				display: inline-block;
-				height: 70px;
-				line-height: 70px;
-				padding: 0 20px;
-				font-size: 18px;
-				color: #606266;
-				cursor: pointer;
-				transition: all 0.25s;
+        &::after {
+          position: absolute;
+          content: '';
+          height: 4px;
+          bottom: 0;
+          left: 50%;
+          width: 0;
+          background-color: #000;
+          transition: all 0.25s;
+        }
 
-				&::after {
-					position: absolute;
-					content: '';
-					height: 4px;
-					bottom: 0;
-					left: 50%;
-					width: 0;
-					background-color: @primary-color;
-					transition: all 0.25s;
-				}
+        &:hover {
+          color: #000;
+        }
 
-				&:hover {
-					color: @primary-color;
-				}
+        &:hover::after {
+          transform: translateX(-20px);
+          width: 40px;
+        }
 
-				&:hover::after {
-					transform: translateX(-20px);
-					width: 40px;
-				}
+        &--active {
+          color: #000;
 
-				&--active {
-					color: @primary-color;
+          &::after {
+            transform: translateX(-20px);
+            width: 40px;
+          }
+        }
+      }
+    }
+  }
+}
 
-					&::after {
-						transform: translateX(-20px);
-						width: 40px;
-					}
-				}
-			}
-		}
-	}
+.app-content {
+  margin: 20px auto;
+  max-width: 1200px;
+  padding: 40px 80px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: @box-shadow;
+
+  &__title {
+    font-family: Georgia;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    font-size: 36px;
+    border-bottom: 1px solid #efefef;
+  }
+
+  &__description {
+    margin-bottom: 50px;
+    list-style: none;
+    padding-left: 0;
+    color: #999;
+
+    &-item {
+      margin-bottom: 12px;
+
+      &:first-child {
+        color: #333;
+      }
+    }
+  }
 }

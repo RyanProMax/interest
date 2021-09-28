@@ -1,3 +1,20 @@
+import Card from '../components/Card';
+import { basePath } from '../settings';
+
 export default function Case() {
-  return <h1>Case</h1>;
+  const LIST = [
+    {
+      name: 'Puzzle',
+      imgSrc: `${basePath}/images/01.jpg`,
+      path: '/case/puzzle'
+    }
+  ];
+
+  return (
+    <div className='interest-case'>
+      {LIST.map((props, idx) => (
+        <Card key={idx} {...props} />
+      ))}
+    </div>
+  );
 }

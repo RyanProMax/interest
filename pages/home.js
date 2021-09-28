@@ -1,13 +1,22 @@
-import styles from '../styles/home.module.less';
+import { useRouter } from 'next/router';
+import { BreakText } from 'noteco';
 
 export default function Home() {
+  const router = useRouter();
+
   return (
-    <div className={styles.home}>
-      <main className={styles['home-main']}>
-        <h1 className={styles['home-main__title']}>Interest</h1>
+    <div className='home'>
+      <main className='home-main'>
+        <BreakText
+          onClick={() => {
+            router.push('/case');
+          }}
+          text='Interest'
+          className='home-main__title'
+        />
       </main>
 
-      <footer className={styles['home-footer']}>
+      <footer className='home-footer'>
         <p>Copyright © 2021 by Ryan</p>
         <p>
           Powered by{' '}

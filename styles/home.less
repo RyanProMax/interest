@@ -1,7 +1,8 @@
 .home {
-  height: 100vh;
-  min-height: 100vh;
+  height: calc(100vh - 1px);
+  min-height: calc(100vh - 1px);
   padding: 0 0.5rem;
+  background-color: #fff;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -16,9 +17,9 @@
     align-items: center;
 
     &__title {
-      margin: 0;
-      line-height: 1.15;
-      font-size: 4rem;
+      width: 450px;
+      height: 160px !important;
+      cursor: pointer;
     }
   }
 
@@ -42,6 +43,20 @@
 
       a {
         color: #4569d4;
+      }
+    }
+  }
+}
+
+@media screen and( max-width: 720px) {
+  .home {
+    &-main {
+      &__title {
+        max-width: 80vw;
+
+        .noteco-break-text__content {
+          transform: translate(-50%, -50%) scale(1.2) !important;
+        }
       }
     }
   }
