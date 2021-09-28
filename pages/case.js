@@ -5,7 +5,7 @@ export default function Case() {
   const LIST = [
     {
       name: 'Puzzle',
-      imgSrc: `${basePath}/images/01.jpg`,
+      imgSrc: `${basePath}/images/02.jpg`,
       path: '/case/puzzle'
     }
   ];
