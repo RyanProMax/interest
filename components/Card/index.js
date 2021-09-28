@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 
 function Card({ name, imgSrc, path }) {
   const router = useRouter();
@@ -11,7 +10,7 @@ function Card({ name, imgSrc, path }) {
         router.push(path);
       }}
     >
-      <Image src={imgSrc} className='interest-card__image' alt={name} width={320} height={320} objectFit='cover' />
+      <img src={imgSrc} className='interest-card__image' alt={name} />
       <span className='interest-card__name'>{name}</span>
     </div>
   );
