@@ -14,9 +14,15 @@
       transform: translateY(-6px);
     }
 
-    &__image {
+    &__image-wrapper {
       width: 320px;
       height: 320px;
+      overflow: hidden;
+    }
+
+    &__image {
+      height: 100%;
+      width: 100%;
       object-fit: cover;
       transition: all 0.25s;
     }

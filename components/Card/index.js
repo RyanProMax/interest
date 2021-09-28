@@ -10,7 +10,9 @@ function Card({ name, imgSrc, path }) {
         router.push(path);
       }}
     >
-      <img src={imgSrc} className='interest-card__image' alt={name} />
+      <div className='interest-card__image-wrapper'>
+        <img src={imgSrc} className='interest-card__image' alt={name} />
+      </div>
       <span className='interest-card__name'>{name}</span>
     </div>
   );
