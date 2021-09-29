@@ -33,7 +33,9 @@ function Generate({ url, width = 800, height = 800, pixel = 8, fileList, onFinis
     const canvas = new fabric.Canvas('canvas', {
       selectable: false,
       selection: false,
-      hoverCursor: 'pointer'
+      hoverCursor: 'pointer',
+      // 禁止浏览器缩放，否则导致图像计算异常
+      enableRetinaScaling: false
     });
     const ctx = canvas.getContext('2d');
 

@@ -5,32 +5,40 @@ import PictureWall from './PictureWall';
 import Size from './Size';
 import Generate from './Generate';
 import { Form, Button } from 'antd';
-import { SyncOutlined, ExportOutlined } from '@ant-design/icons';
+import { SyncOutlined, ExportOutlined, ClearOutlined } from '@ant-design/icons';
 
 const description = [{ val: '根据组合素材拼接成目标图片。' }, { val: '* 画布尺寸为最终生成图片的尺寸，值越大则处理速度越慢。' }, { val: '* 拼图单元为组合素材的尺寸，值越小则处理速度越慢。' }];
 
 export default function Puzzle() {
-  const [form, setForm] = useState({});
-  const [showCanvas, setShowCanvas] = useState(false);
+  const [form] = Form.useForm();
+  const [formData, setFormData] = useState({});
+  const [useCanvas, setUseCanvas] = useState(false);
   const canvasRef = useRef(null);
 
   const [loading, setLoading] = useState(false);
 
   const onFinish = values => {
-    console.log('onFinish: ', values);
-    setForm(values);
-    setShowCanvas(true);
+    // console.log('onFinish: ', values);
+    setFormData(values);
+    setUseCanvas(true);
     setLoading(true);
   };
 
+  const handleReset = () => {
+    form.resetFields();
+    setUseCanvas(false);
+    setLoading(false);
+  };
+
   const handleExport = () => {
-    canvasRef.current.changeVal(form.file.name);
+    canvasRef.current.changeVal(formData.file.name);
   };
 
   return (
     <Main className='interest-puzzle' title='Puzzle' description={description}>
       <Form
         name='basic'
+        form={form}
         initialValues={{
           size: 3200,
           pixel: 32
@@ -95,23 +103,28 @@ export default function Puzzle() {
           <Button loading={loading} icon={<SyncOutlined />} type='primary' htmlType='submit'>
             Generate
           </Button>
-          {showCanvas && !loading && (
+          {useCanvas && !loading && (
             <Button loading={loading} onClick={handleExport} icon={<ExportOutlined />} type='primary' style={{ marginLeft: 20 }}>
               Export
             </Button>
           )}
+          {useCanvas && (
+            <Button onClick={handleReset} icon={<ClearOutlined />} style={{ marginLeft: 20 }}>
+              Reset
+            </Button>
+          )}
         </Form.Item>
 
-        {showCanvas && (
+        {useCanvas && (
           <Form.Item label='预览' style={{ marginTop: 50 }}>
             <div className='interest-puzzle__canvas-wrapper'>
               <Generate
                 ref={canvasRef}
-                width={form.size}
-                height={form.size}
-                pixel={form.pixel}
-                url={form.file.imageUrl}
-                fileList={form.fileList}
+                width={formData.size}
+                height={formData.size}
+                pixel={formData.pixel}
+                url={formData.file.imageUrl}
+                fileList={formData.fileList}
                 export={handleExport}
                 onFinish={() => {
                   setLoading(false);
