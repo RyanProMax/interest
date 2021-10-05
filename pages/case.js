@@ -1,4 +1,4 @@
-import Card from '../components/Card';
+import Card from '../src/components/Card';
 import { basePath } from '../settings';
 import { Row, Col } from 'antd';
 
@@ -20,10 +20,10 @@ export default function Case({ isMobile }) {
   return (
     <div className="interest-case">
       <Row gutter={[16, 16]}>
-        {LIST.map((props, idx) =>
-          isMobile && props.onlyPC ? null : (
-            <Col key={idx} xs={24} md={12} lg={8}>
-              <Card {...props} />
+        {LIST.map((p, i) =>
+          isMobile && p.onlyPC ? null : (
+            <Col key={i} xs={24} md={12} lg={8}>
+              <Card {...p} />
             </Col>
           )
         )}

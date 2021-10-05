@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-function Card({ name, imgSrc, path, ...rest }) {
+function Card({ name, imgSrc, path, onlyPC, ...rest }) {
   const router = useRouter();
 
   return (

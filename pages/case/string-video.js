@@ -1,1 +1,1 @@
-export { default } from '../../components/StringVideo';
+export { default } from '../../src/components/StringVideo';

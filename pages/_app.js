@@ -1,9 +1,9 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import Layout from '../components/Layout';
+import Layout from '../src/components/Layout';
 import { basePath } from '../settings';
-import '../styles/index.less';
-import { useViewport } from '../utils/index';
+import '../src/styles/index.less';
+import { useViewport } from '../src/utils/index';
 
 const BREAK_POINT = 720;
 

@@ -1,1 +1,1 @@
-export { default } from '../../components/Puzzle';
+export { default } from '../../src/components/Puzzle';
