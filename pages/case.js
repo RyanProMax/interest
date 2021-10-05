@@ -1,26 +1,33 @@
 import Card from '../components/Card';
 import { basePath } from '../settings';
+import { Row, Col } from 'antd';
 
-export default function Case() {
+export default function Case({ isMobile }) {
   const LIST = [
     {
       name: 'Puzzle',
       imgSrc: `${basePath}/images/02.jpg`,
-      path: '/case/puzzle'
+      path: '/case/puzzle',
+      onlyPC: true
     },
-
     {
-      name: 'Pixel Video',
+      name: 'String Video',
       imgSrc: `${basePath}/images/03.jpg`,
-      path: '/case/pixel-video'
+      path: '/case/string-video'
     }
   ];
 
   return (
     <div className="interest-case">
-      {LIST.map((props, idx) => (
-        <Card key={idx} {...props} style={{ margin: '0 10px 20px 10px' }} />
-      ))}
+      <Row gutter={[16, 16]}>
+        {LIST.map((props, idx) =>
+          isMobile && props.onlyPC ? null : (
+            <Col key={idx} xs={24} md={12} lg={8}>
+              <Card {...props} />
+            </Col>
+          )
+        )}
+      </Row>
     </div>
   );
 }

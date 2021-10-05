@@ -1,0 +1,23 @@
+.interest {
+  &-string-video {
+    &__content {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+  }
+}
+
+@media screen and (max-width: 1159px) {
+  .interest {
+    &-string-video {
+      &__content {
+        justify-content: center;
+      }
+
+      &__canvas {
+        margin-top: 20px;
+      }
+    }
+  }
+}
