@@ -1,7 +1,7 @@
-import { useRouter } from 'next/router';
 import classnames from 'classnames';
 import { LinkOutlined } from '@ant-design/icons';
 import { AnimateLineText } from 'noteco';
+import MobileMenu from '../MobileMenu';
 
 const ROUTES = [
   { name: 'Case', link: '/case' },
@@ -14,8 +14,7 @@ const ROUTES = [
   { name: 'Github', link: 'https://github.com/Ryan-zyy/interest', out: true }
 ];
 
-function Header({ isMobile }) {
-  const router = useRouter();
+function Header({ isMobile, router }) {
   const currentPath = router.route;
 
   return (
@@ -36,7 +35,14 @@ function Header({ isMobile }) {
           ]}
         />
       </div>
-      {!isMobile && (
+      {isMobile ? (
+        <MobileMenu
+          ROUTES={ROUTES}
+          router={router}
+          currentPath={currentPath}
+          className="interest-header__mobile-menu"
+        />
+      ) : (
         <div className="interest-header__navigator">
           {ROUTES.map((route, idx) => {
             if (route.out)
