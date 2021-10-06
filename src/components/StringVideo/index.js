@@ -8,42 +8,36 @@ const description = [
 ];
 
 const fillList = ['#', '*', '+', '"', '　'];
-const gap = 12;
-let height = 0;
+const gap = 6;
 
 export default function StringVideo(props) {
   const { isMobile } = props;
 
-  const isInited = useRef(false);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const timerRef = useRef(null);
 
   const [width, setWidth] = useState(500);
+  const [height, setHeight] = useState(375);
 
   useEffect(() => {
     if (isMobile && width === 500) {
       setWidth(300);
+      setHeight(225);
     } else if (!isMobile && width === 300) {
       setWidth(500);
+      setHeight(375);
     }
   }, [width, isMobile]);
 
   const handleRender = () => {
+    console.log('render');
     const video = videoRef.current;
     const canvas = canvasRef.current;
-
-    console.log('render');
-    // init canvas
-    if (!isInited.current) {
-      const { offsetHeight } = video;
-      height = offsetHeight;
-      canvas.setAttribute('height', height);
-      isInited.current = true;
-    }
+    if (!video || !canvas) return;
 
     const ctx = canvas.getContext('2d');
-    if (!video || !canvas || !ctx) return;
+    if (!ctx) return;
 
     // read video frame
     ctx.drawImage(video, 0, 0, width, height);
@@ -95,6 +89,7 @@ export default function StringVideo(props) {
         <canvas
           ref={canvasRef}
           width={width}
+          height={height}
           className="interest-string-video__canvas"
         />
       </div>
