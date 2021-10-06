@@ -19,10 +19,10 @@ export default function Case({ isMobile }) {
 
   return (
     <div className="interest-case">
-      <Row gutter={[16, 16]}>
+      <Row gutter={[16, 16]} style={{ maxWidth: 1280, width: '100%' }}>
         {LIST.map((p, i) =>
           isMobile && p.onlyPC ? null : (
-            <Col key={i} xs={24} md={12} lg={8}>
+            <Col key={i} xs={24} md={12} lg={8} xl={6}>
               <Card {...p} />
             </Col>
           )
