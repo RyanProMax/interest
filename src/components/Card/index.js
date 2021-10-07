@@ -1,20 +1,24 @@
 import { useRouter } from 'next/router';
+import classnames from 'classnames';
 
-function Card({ name, imgSrc, path, onlyPC, ...rest }) {
+function Card({ name, imgSrc, path, isMobile }) {
   const router = useRouter();
 
   return (
     <div
-      className="interest-card"
+      className='interest-card'
       onClick={() => {
         router.push(path);
       }}
-      {...rest}
     >
-      <div className="interest-card__image-wrapper">
-        <img src={imgSrc} className="interest-card__image" alt={name} />
+      <div
+        className={classnames('interest-card__image-wrapper', {
+          'interest-card__image-wrapper--mobile': isMobile
+        })}
+      >
+        <img src={imgSrc} className='interest-card__image' alt={name} />
       </div>
-      <span className="interest-card__name">{name}</span>
+      <span className='interest-card__name'>{name}</span>
     </div>
   );
 }

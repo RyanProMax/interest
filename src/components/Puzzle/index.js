@@ -6,16 +6,21 @@ import Size from './Size';
 import Generate from './Generate';
 import { Form, Button } from 'antd';
 import { SyncOutlined, ExportOutlined, ClearOutlined } from '@ant-design/icons';
+import MobileEmpty from '../MobileEmpty';
 
 const description = [{ val: '根据组合素材拼接成目标图片。' }, { val: '* 画布尺寸为最终生成图片的尺寸，值越大则处理速度越慢。' }, { val: '* 拼图单元为组合素材的尺寸，值越小则处理速度越慢。' }];
 
-export default function Puzzle() {
+export default function Puzzle(props) {
   const [form] = Form.useForm();
   const [formData, setFormData] = useState({});
   const [useCanvas, setUseCanvas] = useState(false);
   const canvasRef = useRef(null);
 
   const [loading, setLoading] = useState(false);
+
+  if (props.isMobile) {
+    return <MobileEmpty {...props} />;
+  }
 
   const onFinish = values => {
     // console.log('onFinish: ', values);
