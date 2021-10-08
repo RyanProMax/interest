@@ -1,31 +1,13 @@
 import Main from '../Main';
 import { createGIF } from 'gifshot';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { Form, Button, Slider, message, Progress } from 'antd';
 import { SyncOutlined, ClearOutlined } from '@ant-design/icons';
 import Upload from './Upload';
-import { debounce } from '../../utils';
+import { debounce, screenShot } from '../../utils';
 import MobileEmpty from '../MobileEmpty';
 
-const description = [{ val: '上传视频生成 GIF。' }, { val: '* 依赖库：gifshot（https://github.com/yahoo/gifshot）' }, { val: '* 暂不支持移动端使用。' }];
-
-function screenShot(url, currentTime) {
-  return new Promise(resolve => {
-    const video = document.createElement('video');
-    video.src = url;
-    video.controls = true;
-    video.currentTime = currentTime;
-    video.oncanplay = () => {
-      console.log('screenShot, onCanPlay');
-      const canvas = document.createElement('canvas');
-      canvas.width = 320;
-      canvas.height = 180;
-      canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      resolve(canvas.toDataURL('image/png'));
-    };
-  });
-}
+const description = [{ val: '上传视频生成 GIF。' }, { val: '* 纯在线转换，无需上传至后台，请放心使用。' }, { val: '* 依赖库：gifshot（https://github.com/yahoo/gifshot）' }, { val: '* 暂不支持移动端使用。' }];
 
 export default function GenerateGIF(props) {
   const [form] = Form.useForm();

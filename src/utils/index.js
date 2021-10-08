@@ -47,3 +47,30 @@ export function debounce(fn, delay, immediate = false) {
 
   return _debounce;
 }
+
+/**
+ * 截取视频指定时间图片
+ *
+ * @param {string} url 视频链接
+ * @param {number} currentTime 指定视频时间
+ * @param {number} width 图片宽度
+ * @param {number} height 图片高度
+ * @returns
+ */
+export function screenShot(url, currentTime, width = 320, height = 180) {
+  return new Promise(resolve => {
+    const video = document.createElement('video');
+    video.src = url;
+    video.controls = true;
+    video.currentTime = currentTime;
+    video.oncanplay = () => {
+      console.log('screenShot, onCanPlay');
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext('2d').drawImage(video, 0, 0, width, height);
+
+      resolve(canvas.toDataURL('image/png'));
+    };
+  });
+}
