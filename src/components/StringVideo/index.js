@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import Main from '../Main';
+import { basePath } from '../../../settings';
 
 const description = [
   { val: 'JavaScript 输出字符画视频。' },
@@ -79,7 +80,7 @@ export default function StringVideo(props) {
       <div className="interest-string-video__content">
         <video
           ref={videoRef}
-          src="/interest/videos/01.mp4"
+          src={`${basePath}/videos/01.mp4`}
           style={{ width: width }}
           onPlay={handleRender}
           onPause={handleStopRender}
