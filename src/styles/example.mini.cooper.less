@@ -1,0 +1,28 @@
+.interest-mini-cooper {
+  &__loading {
+    position: fixed;
+    height: calc(100vh - 70px);
+    width: 100vw;
+    top: 70px;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__progress {
+    width: 80%;
+
+    .ant-progress-text {
+      color: #fff;
+    }
+  }
+
+  &__content {
+    width: 100%;
+    height: calc(100vh - 400px);
+  }
+}

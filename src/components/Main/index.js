@@ -1,12 +1,7 @@
 import classnames from 'classnames';
+import { forwardRef } from 'react';
 
-export default function Main({
-  children,
-  className,
-  title,
-  description,
-  isMobile
-}) {
+function Main({ children, className, title, description, isMobile }, ref) {
   return (
     <div
       className={classnames(
@@ -16,13 +11,14 @@ export default function Main({
         },
         className
       )}
+      ref={ref}
     >
-      {title && <h1 className="app-content__title">{title}</h1>}
-      <ul className="app-content__description">
+      {title && <h1 className='app-content__title'>{title}</h1>}
+      <ul className='app-content__description'>
         {description &&
           description.length &&
           description.map(({ val, style }, i) => (
-            <li key={i} style={style} className="app-content__description-item">
+            <li key={i} style={style} className='app-content__description-item'>
               {val}
             </li>
           ))}
@@ -31,3 +27,5 @@ export default function Main({
     </div>
   );
 }
+
+export default forwardRef(Main);

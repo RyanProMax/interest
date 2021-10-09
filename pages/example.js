@@ -18,6 +18,11 @@ export default function Example({ isMobile }) {
       name: 'Generate GIF',
       imgSrc: `${basePath}/images/03.jpg`,
       path: '/example/generate-gif'
+    },
+    {
+      name: 'Mini Cooper',
+      imgSrc: `${basePath}/images/04.png`,
+      path: '/example/mini-cooper'
     }
   ];
 
