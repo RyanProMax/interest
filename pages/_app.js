@@ -27,7 +27,7 @@ function App({ Component, pageProps }) {
     <>
       <Head>
         <title>{subTitle ? `${subTitle} | ` : null}Interest</title>
-        <meta name="description" content="Record every interesting case" />
+        <meta name="description" content="Record every interesting example" />
         <link rel="icon" href={`${basePath}/favicon.ico`} />
       </Head>
       {useLayout ? (

@@ -4,7 +4,7 @@ import { AnimateLineText } from 'noteco';
 import MobileMenu from '../MobileMenu';
 
 const ROUTES = [
-  { name: 'Case', link: '/case' },
+  { name: 'Example', link: '/example' },
   // { name: 'About', link: '/about' },
   {
     name: 'My Component',

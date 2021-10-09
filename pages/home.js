@@ -7,7 +7,7 @@ export default function Home({ isMobile, router }) {
       <main className="home-main">
         <BreakText
           onClick={() => {
-            router.push('/case');
+            router.push('/example');
           }}
           text="Interest"
           className="home-main__title"

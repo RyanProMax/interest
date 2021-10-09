@@ -2,14 +2,14 @@
   "name": "interest",
   "version": "0.1.0",
   "private": true,
-  "description": "Record every interesting case",
+  "description": "Record every interesting example",
   "author": "Ryan",
   "license": "MIT",
   "keywords": [
     "frontend",
     "interest",
     "interesting",
-    "case",
+    "example",
     "react",
     "next",
     "study"
@@ -39,7 +39,8 @@
     "next-with-less": "^1.0.1",
     "noteco": "0.0.8-rc.5",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "three": "^0.133.1"
   },
   "devDependencies": {
     "babel-plugin-import": "^1.13.3",
