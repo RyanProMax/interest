@@ -21,7 +21,7 @@
     "platform": "github"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "cross-env NODE_ENV=development next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "babel-plugin-import": "^1.13.3",
+    "cross-env": "^7.0.3",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.2"
   }

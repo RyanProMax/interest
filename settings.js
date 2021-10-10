@@ -1,4 +1,9 @@
+const RESOURCE_DOMAIN = 'https://cloud.zhangyuyan.cn';
+const TEST_DOMAIN = '/test';
+
+const isDev = process.env.NODE_ENV === 'development';
+
 module.exports = {
   basePath: '',
-  resourceDomain: 'https://cloud.zhangyuyan.cn'
+  domain: isDev ? TEST_DOMAIN : RESOURCE_DOMAIN
 };

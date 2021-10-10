@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { resourceDomain } from '../../../settings';
+import { domain } from '../../../settings';
 import { Spin, Progress } from 'antd';
 import Main from '../Main';
 
@@ -51,7 +51,7 @@ export default function MiniCooper(props) {
       // 加载模型
       const loader = new GLTFLoader();
       loader.load(
-        `${resourceDomain}/model/mini_cooper_s/scene.gltf`,
+        `${domain}/model/mini_cooper_s/scene.gltf`,
         function (gltf) {
           setProcess(0);
 
