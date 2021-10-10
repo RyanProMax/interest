@@ -1,3 +1,4 @@
 module.exports = {
-  basePath: ''
+  basePath: '',
+  resourceDomain: 'https://cloud.zhangyuyan.cn'
 };

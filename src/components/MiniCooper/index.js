@@ -2,10 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { basePath } from '../../../settings';
+import { resourceDomain } from '../../../settings';
 import { Spin, Progress } from 'antd';
 import Main from '../Main';
-import { render } from 'less';
 
 const description = [
   { val: 'Mini Cooper 3D 模型。' },
@@ -24,7 +23,6 @@ export default function MiniCooper(props) {
     const width = Math.round(container.current.clientWidth);
     const height = window.innerHeight - 400;
 
-    console.log('renderer.current: ', rendererRef.current);
     if (!rendererRef.current) {
       // 场景
       const scene = new THREE.Scene();
@@ -53,7 +51,7 @@ export default function MiniCooper(props) {
       // 加载模型
       const loader = new GLTFLoader();
       loader.load(
-        `https://cloud.zhangyuyan.cn/model/mini_cooper_s/scene.gltf`,
+        `${resourceDomain}/model/mini_cooper_s/scene.gltf`,
         function (gltf) {
           setProcess(0);
 
@@ -71,10 +69,8 @@ export default function MiniCooper(props) {
           scene.add(gltf.scene);
         },
         function (xhr) {
-          console.log('xhr: ', xhr);
           if (xhr.total === 0) return;
           // 侦听模型加载进度
-          console.log((xhr.loaded / xhr.total) * 100 + '%');
           setProcess(Math.round((xhr.loaded / xhr.total) * 100));
         },
         function (error) {
