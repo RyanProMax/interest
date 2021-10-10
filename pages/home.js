@@ -15,8 +15,9 @@ export default function Home({ isMobile, router }) {
       </main>
 
       <footer className="home-footer">
-        <p>Copyright © 2021 by Ryan</p>
         <p>
+          Copyright © 2021 by Ryan
+          <span style={{ margin: '0 6px' }}>|</span>
           Powered by{' '}
           <a
             href="https://nextjs.org/"
@@ -26,6 +27,13 @@ export default function Home({ isMobile, router }) {
             Next.js
           </a>
         </p>
+        <a
+          className="home-footer__icp"
+          href="https://beian.miit.gov.cn"
+          target="__blank"
+        >
+          粤ICP备2021093548号
+        </a>
       </footer>
     </div>
   );
