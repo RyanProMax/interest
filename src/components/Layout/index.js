@@ -5,6 +5,7 @@ export default function Layout({ children, ...rest }) {
     <>
       <Header {...rest} />
       {children}
+      <div style={{ height: 20 }}></div>
     </>
   );
 }

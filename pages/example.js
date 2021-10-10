@@ -30,7 +30,7 @@ export default function Example({ isMobile }) {
     <div className="interest-example">
       <Row gutter={[16, 16]} style={{ maxWidth: 1280, width: '100%' }}>
         {LIST.map((p, i) => (
-          <Col key={i} xs={24} md={12} lg={8} xl={6}>
+          <Col key={i} xs={24} sm={12} lg={8} xl={6}>
             <Card {...p} isMobile={isMobile} />
           </Col>
         ))}

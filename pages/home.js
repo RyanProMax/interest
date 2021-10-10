@@ -1,9 +1,9 @@
 import { BreakText } from 'noteco';
 import classnames from 'classnames';
 
-export default function Home({ isMobile, router }) {
+export default function Home({ isNarrow, router }) {
   return (
-    <div className={classnames('home', { 'home--mobile': isMobile })}>
+    <div className={classnames('home', { 'home--mobile': isNarrow })}>
       <main className="home-main">
         <BreakText
           onClick={() => {

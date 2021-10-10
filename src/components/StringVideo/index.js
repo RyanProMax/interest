@@ -5,14 +5,14 @@ import { basePath } from '../../../settings';
 
 const description = [
   { val: 'JavaScript 输出字符画视频。' },
-  { val: '* 示例：Bad Apple' }
+  { val: '* 示例：Bad Apple。' }
 ];
 
 const fillList = ['#', '*', '+', '"', '　'];
 const gap = 6;
 
 export default function StringVideo(props) {
-  const { isMobile } = props;
+  const { isNarrow } = props;
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -22,14 +22,14 @@ export default function StringVideo(props) {
   const [height, setHeight] = useState(375);
 
   useEffect(() => {
-    if (isMobile && width === 500) {
+    if (isNarrow && width === 500) {
       setWidth(300);
       setHeight(225);
-    } else if (!isMobile && width === 300) {
+    } else if (!isNarrow && width === 300) {
       setWidth(500);
       setHeight(375);
     }
-  }, [width, isMobile]);
+  }, [width, isNarrow]);
 
   const handleRender = () => {
     console.log('render');

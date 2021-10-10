@@ -3,9 +3,9 @@ import { useRouter } from 'next/router';
 import Layout from '../src/components/Layout';
 import { basePath } from '../settings';
 import '../src/styles/index.less';
-import { useViewport } from '../src/utils/index';
+import { useViewport, useGetDevice } from '../src/utils/index';
 
-const BREAK_POINT = 720;
+const BREAK_POINT = 750;
 
 function App({ Component, pageProps }) {
   const router = useRouter();
@@ -15,12 +15,16 @@ function App({ Component, pageProps }) {
   const blackList = ['/', '/home'];
   const useLayout = !blackList.includes(route);
   const { width } = useViewport();
-  const isMobile = width < BREAK_POINT;
+  const { isMobile, model } = useGetDevice();
+  const isNarrow = width < BREAK_POINT;
 
   const props = {
     ...pageProps,
     router,
-    isMobile
+    isMobile,
+    isNarrow,
+    model,
+    width
   };
 
   return (

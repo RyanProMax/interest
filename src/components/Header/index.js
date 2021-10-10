@@ -14,13 +14,13 @@ const ROUTES = [
   { name: 'Github', link: 'https://github.com/Ryan-zyy/interest', out: true }
 ];
 
-function Header({ isMobile, router }) {
+function Header({ isNarrow, router }) {
   const currentPath = router.route;
 
   return (
     <div
       className={classnames('interest-header', {
-        'interest-header__mobile': isMobile
+        'interest-header__mobile': isNarrow
       })}
     >
       <div onClick={() => router.push('/')} className="interest-header__logo">
@@ -35,7 +35,7 @@ function Header({ isMobile, router }) {
           ]}
         />
       </div>
-      {isMobile ? (
+      {isNarrow ? (
         <MobileMenu
           ROUTES={ROUTES}
           router={router}

@@ -13,6 +13,20 @@ export const useViewport = () => {
   return { width };
 };
 
+export const useGetDevice = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  const [model, setModel] = useState('');
+
+  useEffect(() => {
+    setIsMobile(
+      /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)
+    );
+    setModel(navigator.userAgent);
+  }, []);
+
+  return { isMobile, model };
+};
+
 export function debounce(fn, delay, immediate = false) {
   let timeout, result;
   function _debounce(...args) {
