@@ -7,7 +7,10 @@ import { Spin, Progress } from 'antd';
 import Main from '../Main';
 import { render } from 'less';
 
-const description = [{ val: 'Mini Cooper 3D 模型。' }, { val: '* 基于 Three.js。' }];
+const description = [
+  { val: 'Mini Cooper 3D 模型。' },
+  { val: '* 基于 Three.js。' }
+];
 
 export default function MiniCooper(props) {
   const { isMobile } = props;
@@ -50,8 +53,10 @@ export default function MiniCooper(props) {
       // 加载模型
       const loader = new GLTFLoader();
       loader.load(
-        `${basePath}/models/2003_mini_cooper_s/scene.gltf`,
+        `https://cloud.zhangyuyan.cn/model/mini_cooper_s/scene.gltf`,
         function (gltf) {
+          setProcess(0);
+
           const scale = 10000;
           gltf.scene.scale.set(scale, scale, scale);
 
@@ -66,6 +71,7 @@ export default function MiniCooper(props) {
           scene.add(gltf.scene);
         },
         function (xhr) {
+          console.log('xhr: ', xhr);
           if (xhr.total === 0) return;
           // 侦听模型加载进度
           console.log((xhr.loaded / xhr.total) * 100 + '%');
@@ -103,10 +109,15 @@ export default function MiniCooper(props) {
   }, [area, process, isMobile]);
 
   return (
-    <Main className='interest-mini-cooper' title='Mini Cooper' description={description} {...props}>
-      <div ref={container} className='interest-mini-cooper__content' />
+    <Main
+      className="interest-mini-cooper"
+      title="Mini Cooper"
+      description={description}
+      {...props}
+    >
+      <div ref={container} className="interest-mini-cooper__content" />
       {process > 0 && process <= 100 && (
-        <div className='interest-mini-cooper__loading'>
+        <div className="interest-mini-cooper__loading">
           <Spin />
           <Progress
             strokeColor={{
@@ -114,7 +125,7 @@ export default function MiniCooper(props) {
               '100%': '#87d068'
             }}
             percent={process}
-            className='interest-mini-cooper__progress'
+            className="interest-mini-cooper__progress"
           />
         </div>
       )}
