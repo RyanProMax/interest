@@ -12,7 +12,7 @@ function App({ Component, pageProps }) {
   const { route } = router;
   const path = route.split('/');
   const subTitle = path[1];
-  const blackList = ['/', '/home'];
+  const blackList = ['/', '/home', '/temp'];
   const useLayout = !blackList.includes(route);
   const { width } = useViewport();
   const { isMobile, model } = useGetDevice();
@@ -31,8 +31,8 @@ function App({ Component, pageProps }) {
     <>
       <Head>
         <title>{subTitle ? `${subTitle} | ` : null}Interest</title>
-        <meta name="description" content="Record every interesting example" />
-        <link rel="icon" href={`${basePath}/favicon.ico`} />
+        <meta name='description' content='Record every interesting example' />
+        <link rel='icon' href={`${basePath}/favicon.ico`} />
       </Head>
       {useLayout ? (
         <Layout {...props}>
