@@ -18,9 +18,7 @@ export const useGetDevice = () => {
   const [model, setModel] = useState('');
 
   useEffect(() => {
-    setIsMobile(
-      /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)
-    );
+    setIsMobile(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent));
     setModel(navigator.userAgent);
   }, []);
 
@@ -78,13 +76,78 @@ export function screenShot(url, currentTime, width = 320, height = 180) {
     video.controls = true;
     video.currentTime = currentTime;
     video.oncanplay = () => {
-      console.log('screenShot, onCanPlay');
       const canvas = document.createElement('canvas');
       canvas.width = width;
       canvas.height = height;
       canvas.getContext('2d').drawImage(video, 0, 0, width, height);
 
       resolve(canvas.toDataURL('image/png'));
+    };
+  });
+}
+
+/**
+ * 获取视频指定时间图片
+ */
+export function videoToImage({ src, interval, startTime, duration, width, height }) {
+  const fillList = ['#', '*', '+', '"', '　'];
+  const gap = 6;
+  const video = document.createElement('video');
+  video.src = src;
+  video.muted = true;
+  video.currentTime = startTime;
+  const _begin = performance.now();
+  const ret = [];
+  const scale = width / height;
+
+  return new Promise(resolve => {
+    const _collect = ({ canvas, ctx, videoWidth, videoHeight }) => {
+      const cuttingWidth = videoHeight * scale;
+      const cuttingHeight = videoWidth / scale;
+      if (videoWidth > cuttingWidth) {
+        ctx.drawImage(video, Math.ceil((videoWidth - cuttingWidth) / 2), 0, Math.ceil(cuttingWidth), videoHeight, 0, 0, width, height);
+      } else {
+        ctx.drawImage(video, 0, Math.ceil((videoHeight - cuttingHeight) / 2), videoWidth, Math.ceil(cuttingHeight), 0, 0, width, height);
+      }
+      const imgData = ctx.getImageData(0, 0, width, height).data;
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = '#000';
+
+      ctx.font = gap + 'px Verdana';
+      for (let h = 0; h < height; h += gap) {
+        for (let w = 0; w < width; w += gap) {
+          const position = (width * h + w) * 4;
+          const r = imgData[position],
+            g = imgData[position + 1],
+            b = imgData[position + 2];
+          // calculate gray
+          const gray = (r * 30 + g * 59 + b * 11 + 50) / 100;
+          const i = Math.min(fillList.length - 1, parseInt(gray / (255 / fillList.length)));
+          // render
+          ctx.fillText(fillList[i], w, h);
+        }
+      }
+      ret.push(canvas.toDataURL('image/png'));
+
+      if (performance.now() - _begin < duration * 1000) {
+        setTimeout(() => {
+          _collect({ canvas, ctx, videoWidth, videoHeight });
+        }, interval);
+      } else {
+        resolve(ret);
+      }
+    };
+
+    video.oncanplay = () => {
+      const { videoWidth, videoHeight } = video;
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      video.play();
+      _collect({ canvas, ctx, videoWidth, videoHeight });
     };
   });
 }
