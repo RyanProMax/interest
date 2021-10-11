@@ -11,7 +11,7 @@ export default function Example({ isMobile }) {
     },
     {
       name: 'String Video',
-      imgSrc: `${basePath}/images/string-video.jpg`,
+      imgSrc: `${basePath}/images/string-video.gif`,
       path: '/example/string-video'
     },
     {
