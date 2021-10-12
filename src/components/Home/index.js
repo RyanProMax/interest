@@ -15,6 +15,8 @@ export default function Home({ router }) {
   const scene = useRef(null);
   const control = useRef(null);
   const mew = useRef(null);
+  const mew_speed = useRef(MEW_CONFIG.SPEED);
+  const mew_acclerated_speed = useRef(MEW_CONFIG.ACCELERATED_SPEED);
   const earthGroup = useRef(null);
   const [loaded, setLoaded] = useState(0);
   const textureLoader = useRef(new THREE.TextureLoader());
@@ -167,6 +169,13 @@ export default function Home({ router }) {
     };
 
     const animate = () => {
+      if (mew.current) {
+        if (mew_speed.current <= -MEW_CONFIG.SPEED || mew_speed.current >= MEW_CONFIG.SPEED) {
+          mew_acclerated_speed.current = -mew_acclerated_speed.current;
+        }
+        mew.current.scene.position.y += mew_speed.current;
+        mew_speed.current += mew_acclerated_speed.current;
+      }
       earthGroup.current.rotateY(EARTH_CONFIG.ROTATE_SPEED);
       control.current && control.current.update();
       renderer.current.render(scene.current, camera.current);
