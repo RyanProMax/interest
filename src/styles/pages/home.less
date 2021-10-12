@@ -1,6 +1,37 @@
 .interest {
   &-home {
     position: relative;
+
+    &__button {
+      width: 320px;
+      height: 60px;
+      line-height: 60px;
+      font-size: 16px;
+      background-color: transparent;
+      border: none;
+
+      &-wrapper {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 200px;
+        cursor: pointer;
+      }
+
+      &-outline {
+        transition: color 0.5s;
+        color: #fff;
+
+        &:hover {
+          color: #00aaaa;
+
+          .noteco-outline-animation__shape {
+            transition: all 1s;
+            stroke: #00aaaa !important;
+          }
+        }
+      }
+    }
   }
 
   &-footer {

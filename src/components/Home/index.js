@@ -6,8 +6,9 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { CAMERA_CONFIG, EARTH_CONFIG, GALAXY_CONFIG, MEW_CONFIG, RESOURCE_TOTAL, TEXTURE } from './constant';
 import { renderCountryLine } from './util';
 import Loading from '../Loading';
+import { OutlineAnimation } from 'noteco';
 
-export default function Home() {
+export default function Home({ router }) {
   const container = useRef(null);
   const renderer = useRef(null);
   const camera = useRef(null);
@@ -207,6 +208,17 @@ export default function Home() {
   return (
     <div className='interest-home'>
       <div ref={container} className='interest-home__container' />
+      <div
+        className='interest-home__button-wrapper'
+        onClick={() => {
+          router.push('/example');
+        }}
+      >
+        <OutlineAnimation width={320} height={60} className='interest-home__button-outline' rectStyle={{ stroke: '#fff', strokeWidth: '2px' }}>
+          <button className='interest-home__button'>世界也在看着你</button>
+        </OutlineAnimation>
+      </div>
+
       <Footer />
       <Loading text={`资源加载中，请稍后：${loaded}/${RESOURCE_TOTAL}`} progress={(loaded / RESOURCE_TOTAL) * 100} />
     </div>
