@@ -20,9 +20,8 @@ export const GALAXY_CONFIG = {
 
 export const MEW_CONFIG = {
   MODEL: `${domain}/model/mew/scene.gltf`,
-  DISTANCE: -250,
-  SPEED: 0.05,
-  ACCELERATED_SPEED: 0.001
+  MODEL_FBX: `${domain}/model/mew_flying/mew_fly.fbx`,
+  DISTANCE: -250
 };
 
 export const CAMERA_CONFIG = {

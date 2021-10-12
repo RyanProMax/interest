@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import { CAMERA_CONFIG, EARTH_CONFIG, GALAXY_CONFIG, MEW_CONFIG, RESOURCE_TOTAL, TEXTURE } from './constant';
 import { renderCountryLine } from './util';
 import Loading from '../Loading';
@@ -15,8 +16,7 @@ export default function Home({ router }) {
   const scene = useRef(null);
   const control = useRef(null);
   const mew = useRef(null);
-  const mew_speed = useRef(MEW_CONFIG.SPEED);
-  const mew_acclerated_speed = useRef(MEW_CONFIG.ACCELERATED_SPEED);
+  const clock = useRef(null);
   const earthGroup = useRef(null);
   const [loaded, setLoaded] = useState(0);
   const textureLoader = useRef(new THREE.TextureLoader());
@@ -131,7 +131,11 @@ export default function Home({ router }) {
 
       // render Earth
       const earthGeometry = new THREE.SphereGeometry(EARTH_CONFIG.RADIUS, 50, 50);
-      const earthMaterial = new THREE.MeshBasicMaterial({ color: 0x020924, transparent: true, opacity: 0.8 });
+      const earthMaterial = new THREE.MeshBasicMaterial({
+        color: 0x020924,
+        transparent: true,
+        opacity: 0.8
+      });
       const earth = new THREE.Mesh(earthGeometry, earthMaterial);
       group.add(earth);
 
@@ -150,32 +154,29 @@ export default function Home({ router }) {
 
     // 绘制梦幻
     const initMew = () => {
-      const loader = new GLTFLoader();
-      loader.load(
-        MEW_CONFIG.MODEL,
-        gltf => {
-          setLoaded(n => n + 1);
+      const loader = new FBXLoader();
+      loader.load(MEW_CONFIG.MODEL_FBX, mesh => {
+        setLoaded(n => n + 1);
+        const scale = 2;
+        mesh.scale.set(scale, scale, scale);
+        mesh.position.set(0, 0, MEW_CONFIG.DISTANCE);
+        scene.current.add(mesh);
 
-          gltf.scene.position.set(0, 0, MEW_CONFIG.DISTANCE);
+        mew.current = mesh;
 
-          scene.current.add(gltf.scene);
-          mew.current = gltf;
-        },
-        xhr => {},
-        function (error) {
-          console.error('error: ', error);
-        }
-      );
+        const mixer = (mesh.mixer = new THREE.AnimationMixer(mesh));
+        const AnimationAction = mixer.clipAction(mesh.animations[0]);
+        AnimationAction.play();
+
+        clock.current = new THREE.Clock();
+      });
     };
 
     const animate = () => {
-      if (mew.current) {
-        if (mew_speed.current <= -MEW_CONFIG.SPEED || mew_speed.current >= MEW_CONFIG.SPEED) {
-          mew_acclerated_speed.current = -mew_acclerated_speed.current;
-        }
-        mew.current.scene.position.y += mew_speed.current;
-        mew_speed.current += mew_acclerated_speed.current;
+      if (mew.current && mew.current.mixer) {
+        mew.current.mixer.update(clock.current.getDelta());
       }
+
       earthGroup.current.rotateY(EARTH_CONFIG.ROTATE_SPEED);
       control.current && control.current.update();
       renderer.current.render(scene.current, camera.current);
@@ -215,16 +216,16 @@ export default function Home({ router }) {
   }, []);
 
   return (
-    <div className='interest-home'>
-      <div ref={container} className='interest-home__container' />
+    <div className="interest-home">
+      <div ref={container} className="interest-home__container" />
       <div
-        className='interest-home__button-wrapper'
+        className="interest-home__button-wrapper"
         onClick={() => {
           router.push('/example');
         }}
       >
-        <OutlineAnimation width={320} height={60} className='interest-home__button-outline' rectStyle={{ stroke: '#fff', strokeWidth: '2px' }}>
-          <button className='interest-home__button'>世界也在看着你</button>
+        <OutlineAnimation width={320} height={60} className="interest-home__button-outline" rectStyle={{ stroke: '#fff', strokeWidth: '2px' }}>
+          <button className="interest-home__button">世界也在看着你</button>
         </OutlineAnimation>
       </div>
 
