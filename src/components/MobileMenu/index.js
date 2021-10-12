@@ -28,16 +28,13 @@ function MobileMenu({ ROUTES, className, router, currentPath }) {
         })}
         onClick={handleClick}
       >
+        <span onClick={handleNavigate({ link: '/' })} className='interest-mobile-menu__title'>
+          Ryan&#39;s Blog
+        </span>
         {ROUTES.map((route, idx) => {
           if (route.out)
             return (
-              <a
-                href={route.link}
-                key={idx}
-                target="_blank"
-                className="interest-mobile-menu__content-item"
-                rel="noreferrer"
-              >
+              <a href={route.link} key={idx} target='_blank' className='interest-mobile-menu__content-item' rel='noreferrer'>
                 {route.name} <LinkOutlined />
               </a>
             );
@@ -46,8 +43,7 @@ function MobileMenu({ ROUTES, className, router, currentPath }) {
               key={idx}
               onClick={handleNavigate(route)}
               className={classnames('interest-mobile-menu__content-item', {
-                'interest-mobile-menu__content-item--active':
-                  currentPath.includes(route.link)
+                'interest-mobile-menu__content-item--active': currentPath.includes(route.link)
               })}
             >
               {route.name}
