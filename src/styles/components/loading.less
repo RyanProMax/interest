@@ -1,0 +1,26 @@
+.interest {
+  &-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    font-size: 14px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 2s;
+
+    &--hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    &__progress {
+      width: 60%;
+    }
+  }
+}
