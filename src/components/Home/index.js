@@ -1,7 +1,10 @@
+import Footer from '../Footer';
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { EARTH_CONFIG, GALAXY_CONFIG, TEXTURE } from './constant';
+import { renderCountryLine } from './util';
 
 const width = window.innerWidth;
 const height = window.innerHeight;
@@ -12,6 +15,7 @@ export default function Home() {
   const camera = useRef(null);
   const scene = useRef(null);
   const control = useRef(null);
+  const textureLoader = useRef(new THREE.TextureLoader());
 
   useEffect(() => {
     // 渲染器
@@ -28,13 +32,8 @@ export default function Home() {
 
     // 摄像机
     const initCamera = () => {
-      const _camera = new THREE.PerspectiveCamera(
-        75,
-        width / height,
-        0.1,
-        1000
-      );
-      _camera.position.set(0, 0, 200);
+      const _camera = new THREE.PerspectiveCamera(75, width / height, 1, GALAXY_CONFIG.RADIUS * 2);
+      _camera.position.set(0, 0, 600);
       _camera.lookAt(0, 0, 0);
       camera.current = _camera;
     };
@@ -43,82 +42,59 @@ export default function Home() {
     const initScene = () => {
       const _scene = new THREE.Scene();
       _scene.background = new THREE.Color(0x020924);
-      _scene.fog = new THREE.Fog(0x020924, 200, 1000);
+      _scene.fog = new THREE.Fog(0x999999, GALAXY_CONFIG.RADIUS, GALAXY_CONFIG.RADIUS * 3);
       scene.current = _scene;
     };
 
     // 控制器
     const initControl = () => {
-      const _control = new OrbitControls(
-        camera.current,
-        renderer.current.domElement
-      );
+      const _control = new OrbitControls(camera.current, renderer.current.domElement);
       _control.enableDamping = true;
       _control.enableZoom = true;
-      _control.autoRotate = false;
-      _control.autoRotateSpeed = 2;
-      _control.enablePan = true;
+      _control.autoRotate = true;
+      _control.autoRotateSpeed = 0.25;
+      _control.enablePan = false;
+      _control.maxDistance = GALAXY_CONFIG.RADIUS - 200;
       control.current = _control;
     };
 
     // 光照
-    const initLight = () => {
-      const _scene = scene.current;
+    const initLight = () => {};
 
-      const ambientLight = new THREE.AmbientLight(0xcccccc, 1.1);
-      _scene.add(ambientLight);
+    // 银河
+    const initGalaxy = () => {
+      // 星系球体
+      const galaxyGeometry = new THREE.SphereGeometry(GALAXY_CONFIG.RADIUS, 50, 50);
+      // 反转，纹理转为内部
+      galaxyGeometry.scale(1, 1, -1);
+      // 纹理
+      const galaxyMaterial = new THREE.MeshBasicMaterial({ map: textureLoader.current.load(TEXTURE.GALAXY) });
 
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.2);
-      directionalLight.position.set(1, 0.1, 0).normalize();
-      let directionalLight2 = new THREE.DirectionalLight(0xff2ffff, 0.2);
-      directionalLight2.position.set(1, 0.1, 0.1).normalize();
-      _scene.add(directionalLight);
-      _scene.add(directionalLight2);
+      const galaxy = new THREE.Mesh(galaxyGeometry, galaxyMaterial);
 
-      const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.2);
-      hemiLight.position.set(0, 1, 0);
-      _scene.add(hemiLight);
-
-      const directionalLight3 = new THREE.DirectionalLight(0xffffff);
-      directionalLight3.position.set(1, 500, -20);
-      directionalLight3.castShadow = true;
-      directionalLight3.shadow.camera.top = 18;
-      directionalLight3.shadow.camera.bottom = -10;
-      directionalLight3.shadow.camera.left = -52;
-      directionalLight3.shadow.camera.right = 12;
-      _scene.add(directionalLight3);
+      scene.current.add(galaxy);
     };
 
     // 星空
-    const initStars = number => {
+    const initStars = () => {
       const positions = [];
       const colors = [];
       const geometry = new THREE.BufferGeometry();
-      for (let i = 0; i < number; i++) {
+      for (let i = 0; i < GALAXY_CONFIG.STARS; i++) {
         const vertex = new THREE.Vector3();
         vertex.x = Math.random() * 2 - 1;
         vertex.y = Math.random() * 2 - 1;
         vertex.z = Math.random() * 2 - 1;
         positions.push(vertex.x, vertex.y, vertex.z);
         const color = new THREE.Color();
-        color.setHSL(
-          Math.random() * 0.2 + 0.5,
-          0.55,
-          Math.random() * 0.25 + 0.55
-        );
+        color.setHSL(Math.random() * 0.2 + 0.5, 0.55, Math.random() * 0.25 + 0.55);
         colors.push(color.r, color.g, color.b);
       }
-      geometry.setAttribute(
-        'position',
-        new THREE.Float32BufferAttribute(positions, 3)
-      );
-      geometry.setAttribute(
-        'color',
-        new THREE.Float32BufferAttribute(colors, 3)
-      );
+      geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
       const starsMaterial = new THREE.PointsMaterial({
-        map: new THREE.TextureLoader().load('/texture/star.png'),
+        map: textureLoader.current.load(TEXTURE.STAR),
         size: 1,
         transparent: true,
         opacity: 1,
@@ -133,16 +109,26 @@ export default function Home() {
       scene.current.add(stars);
     };
 
+    // 绘制矢量地球
     const initEarth = () => {
-      const globeGgeometry = new THREE.SphereGeometry(100, 200, 200);
-      const globeMaterial = new THREE.MeshStandardMaterial({
-        map: new THREE.TextureLoader().load('/texture/earth.png')
-      });
-      const globeMesh = new THREE.Mesh(globeGgeometry, globeMaterial);
-      // group.rotation.set(0.5, 2.9, 0.1);
-      // group.add(globeMesh);
+      const group = new THREE.Group();
 
-      scene.current.add(globeMesh);
+      // render Earth
+      const earthGeometry = new THREE.SphereGeometry(EARTH_CONFIG.RADIUS, 50, 50);
+      const earthMaterial = new THREE.MeshBasicMaterial({ color: 0x020924, transparent: true, opacity: 0.8 });
+      const earth = new THREE.Mesh(earthGeometry, earthMaterial);
+      group.add(earth);
+
+      // render world
+      EARTH_CONFIG.WORLD_GEO_DATA.features.forEach(country => {
+        if (country.geometry.type === 'Polygon') {
+          country.geometry.coordinates = [country.geometry.coordinates];
+        }
+        const line = renderCountryLine(EARTH_CONFIG.RADIUS, country.geometry.coordinates);
+        group.add(line);
+
+        scene.current.add(group);
+      });
     };
 
     const animate = () => {
@@ -169,7 +155,8 @@ export default function Home() {
       initScene();
       initControl();
       initLight();
-      initStars(3000);
+      initGalaxy();
+      initStars();
       initEarth();
 
       handleRender();
@@ -182,8 +169,9 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="interest-home">
-      <div ref={container} className="interest-home__container" />
+    <div className='interest-home'>
+      <div ref={container} className='interest-home__container' />
+      <Footer />
     </div>
   );
 }
