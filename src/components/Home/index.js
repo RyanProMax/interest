@@ -2,10 +2,9 @@ import Footer from '../Footer';
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
-import { CAMERA_CONFIG, EARTH_CONFIG, GALAXY_CONFIG, MARK_POINTS, MEW_CONFIG, RESOURCE_TOTAL, TEXTURE } from './constant';
-import { coordinate2xyz, renderCoordsLine } from './util';
+import { CAMERA_CONFIG, EARTH_CONFIG, FLY_LINES, GALAXY_CONFIG, MARK_POINTS, MEW_CONFIG, RESOURCE_TOTAL, TEXTURE } from './constant';
+import { coordinate2xyz, line, renderCoordsLine } from './util';
 import Loading from '../Loading';
 import { HomeButton } from './HomeButton';
 
@@ -18,6 +17,8 @@ export default function Home({ router }) {
   const mew = useRef(null);
   const clock = useRef(null);
   const earthGroup = useRef(null);
+  const flyLine = useRef(null);
+  const flyLinePointCoefficient = useRef(0);
   const [loaded, setLoaded] = useState(0);
   const textureLoader = useRef(new THREE.TextureLoader());
 
@@ -218,15 +219,64 @@ export default function Home({ router }) {
       const points = MARK_POINTS.DATA.map(point => {
         const { longitude, latitude } = point;
         const { x, y, z } = coordinate2xyz(EARTH_CONFIG.RADIUS * 1.001, longitude, latitude);
-        return [spot(point, { x, y, z }), pillar(point, { x, y, z })];
+        return [spot(point, { x, y, z })];
       });
       earthGroup.current.add(...points.flat(1));
+    };
+
+    // 飞线
+    const calculateBezierCoord = (x1, y1, z1, x2, y2, z2) => {
+      const [tmpx, tmpy, tmpz] = [x1 + x2, y1 + y2, z1 + z2];
+      const x = (tmpx * 5) / 17 + x1 / 2;
+      const y = (tmpy * 5) / 17 + y1 / 2;
+      const z = (tmpz * 5) / 17 + z1 / 2;
+      return { x, y, z };
+    };
+    const initFlyLine = () => {
+      const { POINT_SIZE, POINT_COLOR, LINE_COLOR } = FLY_LINES;
+
+      const lines = FLY_LINES.DATA.map(({ start, stop }) => {
+        const { x: v0x, y: v0y, z: v0z } = coordinate2xyz(EARTH_CONFIG.RADIUS * 1.001, start.longitude, start.latitude);
+        const { x: v3x, y: v3y, z: v3z } = coordinate2xyz(EARTH_CONFIG.RADIUS * 1.001, stop.longitude, stop.latitude);
+
+        const v0 = new THREE.Vector3(v0x, v0y, v0z);
+        const v3 = new THREE.Vector3(v3x, v3y, v3z);
+        const { x: x1, y: y1, z: z1 } = calculateBezierCoord(v0x, v0y, v0z, v3x, v3y, v3z);
+        const { x: x2, y: y2, z: z2 } = calculateBezierCoord(v3x, v3y, v3z, v0x, v0y, v0z);
+        const v1 = new THREE.Vector3(x1, y1, z1);
+        const v2 = new THREE.Vector3(x2, y2, z2);
+
+        const curve = new THREE.CubicBezierCurve3(v0, v1, v2, v3);
+        const points = curve.getPoints(50);
+
+        const geometry = new THREE.BufferGeometry().setFromPoints(points);
+
+        const material = new THREE.LineBasicMaterial({ color: LINE_COLOR });
+
+        return {
+          point: new THREE.Mesh(new THREE.SphereGeometry(POINT_SIZE, 10, 10), new THREE.PointsMaterial({ color: POINT_COLOR, transparent: true, opacity: 0.8 })),
+          curve,
+          line: new THREE.Line(geometry, material)
+        };
+      });
+
+      flyLine.current = lines;
+      earthGroup.current.add(...lines.map(x => x.line), ...lines.map(x => x.point));
     };
 
     // 动画
     const animate = () => {
       if (mew.current && mew.current.mixer) {
         mew.current.mixer.update(clock.current.getDelta());
+      }
+
+      if (flyLine.current && flyLine.current.length) {
+        if (flyLinePointCoefficient.current >= 1) flyLinePointCoefficient.current = 0;
+        flyLine.current.forEach(({ curve, point }) => {
+          point.position.set(...curve.getPointAt(flyLinePointCoefficient.current));
+        });
+
+        flyLinePointCoefficient.current += FLY_LINES.POINT_SPEED;
       }
 
       earthGroup.current && earthGroup.current.rotateY(EARTH_CONFIG.ROTATE_SPEED);
@@ -258,8 +308,9 @@ export default function Home({ router }) {
       initGalaxy();
       initStars();
       initEarth();
-      initMew();
       initMark();
+      initFlyLine();
+      initMew();
 
       handleRender();
     };

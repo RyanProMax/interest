@@ -14,7 +14,7 @@ export const EARTH_CONFIG = {
   CHINA_GEO_DATA,
   ROTATE_SPEED: 0.005,
   COLOR_BASE: 0x00aaaa,
-  COLOR_CHINA: 0xe60000
+  COLOR_CHINA: '#ed1941'
 };
 
 export const GALAXY_CONFIG = {
@@ -35,6 +35,14 @@ export const CAMERA_CONFIG = {
 
 export const RESOURCE_TOTAL = 3;
 
+const MAP = {
+  SHENZHEN: { longitude: 114.085947, latitude: 22.547 },
+  NANCHONG: { longitude: 106.108996, latitude: 30.781809 },
+  SHANGHAI: { longitude: 121.567706, latitude: 31.245944 },
+  QINGHAI: { longitude: 101.796095, latitude: 36.616043 },
+  GANSU: { longitude: 100.455472, latitude: 38.932897 }
+};
+
 export const MARK_POINTS = {
   SIZE: 1,
   PILLAR_HEIGHT: 3,
@@ -42,10 +50,17 @@ export const MARK_POINTS = {
   PILLAR_OPACITY: 0.3,
   color: 'deepskyblue',
   URL: '/texture/point.png',
+  DATA: [MAP['SHENZHEN'], MAP['NANCHONG'], MAP['SHANGHAI'], MAP['QINGHAI'], MAP['GANSU']]
+};
+
+export const FLY_LINES = {
   DATA: [
-    { name: 'SHENZHEN', longitude: 114.085947, latitude: 22.547 },
-    { name: 'SHANGHAI', longitude: 121.567706, latitude: 31.245944 },
-    { name: 'QINGHAI', longitude: 101.796095, latitude: 36.616043 },
-    { name: 'GANSU', longitude: 100.455472, latitude: 38.932897 }
-  ]
+    { start: MAP['SHENZHEN'], stop: MAP['SHANGHAI'] },
+    { start: MAP['SHENZHEN'], stop: MAP['NANCHONG'] },
+    { start: MAP['SHENZHEN'], stop: MAP['QINGHAI'] }
+  ],
+  LINE_COLOR: '#afdfe4',
+  POINT_SIZE: 0.15,
+  POINT_COLOR: '#00aaaa',
+  POINT_SPEED: 0.005
 };
