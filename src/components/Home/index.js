@@ -4,10 +4,10 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
-import { CAMERA_CONFIG, EARTH_CONFIG, GALAXY_CONFIG, MEW_CONFIG, RESOURCE_TOTAL, TEXTURE } from './constant';
-import { renderCountryLine } from './util';
+import { CAMERA_CONFIG, EARTH_CONFIG, GALAXY_CONFIG, MARK_POINTS, MEW_CONFIG, RESOURCE_TOTAL, TEXTURE } from './constant';
+import { coordinate2xyz, renderCoordsLine } from './util';
 import Loading from '../Loading';
-import { OutlineAnimation } from 'noteco';
+import { HomeButton } from './HomeButton';
 
 export default function Home({ router }) {
   const container = useRef(null);
@@ -40,7 +40,7 @@ export default function Home({ router }) {
     // 摄像机
     const initCamera = () => {
       const _camera = new THREE.PerspectiveCamera(75, width / height, 1, GALAXY_CONFIG.RADIUS * 2);
-      _camera.position.set(5, 20, CAMERA_CONFIG.DISTANCE);
+      _camera.position.set(-15, 20, CAMERA_CONFIG.DISTANCE);
       _camera.lookAt(0, 0, 0);
       camera.current = _camera;
     };
@@ -140,37 +140,90 @@ export default function Home({ router }) {
       group.add(earth);
 
       // render world
-      EARTH_CONFIG.WORLD_GEO_DATA.features.forEach(country => {
+      for (const country of EARTH_CONFIG.WORLD_GEO_DATA.features) {
+        if (country.id === 'CHN') continue;
         const { type, coordinates } = country.geometry;
         const _coordinates = type === 'Polygon' ? [coordinates] : coordinates;
-        const line = renderCountryLine(EARTH_CONFIG.RADIUS, _coordinates);
+        const line = renderCoordsLine(EARTH_CONFIG.RADIUS, _coordinates, EARTH_CONFIG.COLOR_BASE);
         group.add(line);
+      }
 
-        scene.current.add(group);
-        earthGroup.current = group;
+      // render china
+      EARTH_CONFIG.CHINA_GEO_DATA.features.forEach(country => {
+        const { type, coordinates } = country.geometry;
+        const _coordinates = type === 'Polygon' ? [coordinates] : coordinates;
+        const line = renderCoordsLine(EARTH_CONFIG.RADIUS, _coordinates, EARTH_CONFIG.COLOR_CHINA);
+        group.add(line);
       });
+
+      scene.current.add(group);
+      earthGroup.current = group;
     };
 
     // 绘制梦幻
-    const initMew = () => {
+    const initMew = async () => {
       const loader = new FBXLoader();
-      loader.load(MEW_CONFIG.MODEL_FBX, mesh => {
-        setLoaded(n => n + 1);
-        const scale = 2;
-        mesh.scale.set(scale, scale, scale);
-        mesh.position.set(0, 0, MEW_CONFIG.DISTANCE);
-        scene.current.add(mesh);
+      const mesh = await loader.loadAsync(MEW_CONFIG.MODEL_FBX);
+      setLoaded(n => n + 1);
+      const scale = 2;
+      mesh.scale.set(scale, scale, scale);
+      mesh.position.set(0, 0, MEW_CONFIG.DISTANCE);
+      scene.current.add(mesh);
 
-        mew.current = mesh;
+      mew.current = mesh;
 
-        const mixer = (mesh.mixer = new THREE.AnimationMixer(mesh));
-        const AnimationAction = mixer.clipAction(mesh.animations[0]);
-        AnimationAction.play();
+      const mixer = (mesh.mixer = new THREE.AnimationMixer(mesh));
+      const AnimationAction = mixer.clipAction(mesh.animations[0]);
+      AnimationAction.play();
 
-        clock.current = new THREE.Clock();
-      });
+      clock.current = new THREE.Clock();
     };
 
+    // 描点
+    const spot = (point, { x, y, z }) => {
+      const { color, URL, SIZE, OPACITY } = { ...MARK_POINTS, ...point };
+      const texture = textureLoader.current.load(URL);
+      const geometry = new THREE.PlaneBufferGeometry(1, 1);
+      const material = new THREE.MeshBasicMaterial({
+        map: texture,
+        color,
+        transparent: true,
+        opacity: OPACITY
+      });
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.scale.set(SIZE, SIZE, SIZE);
+      mesh.position.set(x, y, z);
+      // 偏移校正
+      mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), new THREE.Vector3(x, y, z).normalize());
+      return mesh;
+    };
+    // 光柱
+    const pillar = (point, { x, y, z }) => {
+      const { color, PILLAR_OPACITY, SIZE, PILLAR_HEIGHT } = { ...MARK_POINTS, ...point };
+      const geometry = new THREE.CylinderGeometry(0, SIZE * 0.5, PILLAR_HEIGHT);
+      const material = new THREE.MeshBasicMaterial({
+        color,
+        transparent: true,
+        opacity: PILLAR_OPACITY,
+        side: THREE.DoubleSide
+      });
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.position.set(x, y, z);
+      // 偏移校正
+      mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(x, y, z).normalize());
+      return mesh;
+    };
+    // 初始化描点
+    const initMark = () => {
+      const points = MARK_POINTS.DATA.map(point => {
+        const { longitude, latitude } = point;
+        const { x, y, z } = coordinate2xyz(EARTH_CONFIG.RADIUS * 1.001, longitude, latitude);
+        return [spot(point, { x, y, z }), pillar(point, { x, y, z })];
+      });
+      earthGroup.current.add(...points.flat(1));
+    };
+
+    // 动画
     const animate = () => {
       if (mew.current && mew.current.mixer) {
         mew.current.mixer.update(clock.current.getDelta());
@@ -181,10 +234,12 @@ export default function Home({ router }) {
       renderer.current.render(scene.current, camera.current);
     };
 
+    // 首次绘制
     const handleRender = () => {
       renderer.current.setAnimationLoop(animate);
     };
 
+    // resize
     const handleResize = () => {
       const _camera = camera.current;
       const { clientWidth, clientHeight } = container.current;
@@ -204,6 +259,7 @@ export default function Home({ router }) {
       initStars();
       initEarth();
       initMew();
+      initMark();
 
       handleRender();
     };
@@ -217,17 +273,7 @@ export default function Home({ router }) {
   return (
     <div className="interest-home">
       <div ref={container} className="interest-home__container" />
-      <div
-        className="interest-home__button-wrapper"
-        onClick={() => {
-          router.push('/example');
-        }}
-      >
-        <OutlineAnimation width={320} height={60} className="interest-home__button-outline" rectStyle={{ stroke: '#fff', strokeWidth: '2px' }}>
-          <button className="interest-home__button">世界也在看着你</button>
-        </OutlineAnimation>
-      </div>
-
+      <HomeButton router={router} />
       <Footer />
       <Loading text={`资源加载中，请稍后：${loaded}/${RESOURCE_TOTAL}`} progress={(loaded / RESOURCE_TOTAL) * 100} />
     </div>

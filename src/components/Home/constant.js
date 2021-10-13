@@ -1,4 +1,5 @@
 import WORLD_GEO_DATA from '../../../public/geojson/world.geo';
+import CHINA_GEO_DATA from '../../../public/geojson/china.geo.json';
 import { domain } from '../../../settings';
 
 export const TEXTURE = {
@@ -10,7 +11,10 @@ export const TEXTURE = {
 export const EARTH_CONFIG = {
   RADIUS: 25,
   WORLD_GEO_DATA,
-  ROTATE_SPEED: 0.005
+  CHINA_GEO_DATA,
+  ROTATE_SPEED: 0.005,
+  COLOR_BASE: 0x00aaaa,
+  COLOR_CHINA: 0xe60000
 };
 
 export const GALAXY_CONFIG = {
@@ -30,3 +34,18 @@ export const CAMERA_CONFIG = {
 };
 
 export const RESOURCE_TOTAL = 3;
+
+export const MARK_POINTS = {
+  SIZE: 1,
+  PILLAR_HEIGHT: 3,
+  OPACITY: 0.8,
+  PILLAR_OPACITY: 0.3,
+  color: 'deepskyblue',
+  URL: '/texture/point.png',
+  DATA: [
+    { name: 'SHENZHEN', longitude: 114.085947, latitude: 22.547 },
+    { name: 'SHANGHAI', longitude: 121.567706, latitude: 31.245944 },
+    { name: 'QINGHAI', longitude: 101.796095, latitude: 36.616043 },
+    { name: 'GANSU', longitude: 100.455472, latitude: 38.932897 }
+  ]
+};
