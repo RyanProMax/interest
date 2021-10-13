@@ -141,10 +141,9 @@ export default function Home({ router }) {
 
       // render world
       EARTH_CONFIG.WORLD_GEO_DATA.features.forEach(country => {
-        if (country.geometry.type === 'Polygon') {
-          country.geometry.coordinates = [country.geometry.coordinates];
-        }
-        const line = renderCountryLine(EARTH_CONFIG.RADIUS, country.geometry.coordinates);
+        const { type, coordinates } = country.geometry;
+        const _coordinates = type === 'Polygon' ? [coordinates] : coordinates;
+        const line = renderCountryLine(EARTH_CONFIG.RADIUS, _coordinates);
         group.add(line);
 
         scene.current.add(group);
@@ -177,7 +176,7 @@ export default function Home({ router }) {
         mew.current.mixer.update(clock.current.getDelta());
       }
 
-      earthGroup.current.rotateY(EARTH_CONFIG.ROTATE_SPEED);
+      earthGroup.current && earthGroup.current.rotateY(EARTH_CONFIG.ROTATE_SPEED);
       control.current && control.current.update();
       renderer.current.render(scene.current, camera.current);
     };
