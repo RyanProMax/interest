@@ -30,9 +30,9 @@ function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>{subTitle ? `${subTitle} | ` : null}Interest</title>
-        <meta name='description' content='Record every interesting example' />
-        <link rel='icon' href={`${basePath}/favicon.ico`} />
+        <title>{subTitle ? `${subTitle} | ` : null}Ryan&#39;s Blog</title>
+        <meta name="description" content="Record every interesting example" />
+        <link rel="icon" href={`${basePath}/favicon.ico`} />
       </Head>
       {useLayout ? (
         <Layout {...props}>
