@@ -12,8 +12,8 @@ export const EARTH_CONFIG = {
   WORLD_GEO_DATA,
   CHINA_GEO_DATA,
   ROTATE_SPEED: 0.005,
-  COLOR_BASE: 0x00aaaa,
-  COLOR_CHINA: '#ed1941'
+  COLOR_BASE: 0x145b7d,
+  COLOR_CHINA: '#00aaaa'
 };
 
 export const GALAXY_CONFIG = {
