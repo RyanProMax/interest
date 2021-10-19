@@ -13,8 +13,8 @@ jobs:
       - run: npm install
       - run: npm run export
       - run: touch ./out/.nojekyll
-      - run: echo "zhangyuyan.cn" > ./out/CNAME
-      - run: echo "3248229739272028049" > ./out/tencent1796729923384981875.txt
+      # - run: echo "zhangyuyan.cn" > ./out/CNAME
+      # - run: echo "3248229739272028049" > ./out/tencent1796729923384981875.txt
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
