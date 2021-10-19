@@ -7,7 +7,7 @@
 
 # testing
 /coverage
-/public/test
+/public/test/model
 
 # next.js
 /.next/

@@ -3,9 +3,8 @@ import CHINA_GEO_DATA from '../../../public/geojson/china.geo.json';
 import { domain } from '../../../settings';
 
 export const TEXTURE = {
-  STAR: '/texture/star.png',
-  EARTH: '/texture/earth.png',
-  GALAXY: '/images/galaxy.jfif'
+  STAR: `${domain}/texture/star.png`,
+  GALAXY: `${domain}/images/galaxy.jfif`
 };
 
 export const EARTH_CONFIG = {
@@ -49,7 +48,7 @@ export const MARK_POINTS = {
   OPACITY: 0.8,
   PILLAR_OPACITY: 0.3,
   color: 'deepskyblue',
-  URL: '/texture/point.png',
+  URL: `${domain}/texture/point.png`,
   DATA: [MAP['SHENZHEN'], MAP['NANCHONG'], MAP['SHANGHAI'], MAP['QINGHAI'], MAP['GANSU']]
 };
 
