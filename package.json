@@ -21,7 +21,7 @@
     "platform": "github"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development next dev",
+    "dev": "cross-env NODE_ENV=development next dev -p 3001",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
