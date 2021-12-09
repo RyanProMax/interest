@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-    文档：https://ryan-zyy.github.io/interest
+    文档：https://RyanProMax.github.io/interest
 </p>
 
 ## 📅 计划

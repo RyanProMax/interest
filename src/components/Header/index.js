@@ -8,10 +8,10 @@ const ROUTES = [
   // { name: 'About', link: '/about' },
   {
     name: 'My Component',
-    link: 'https://ryan-zyy.github.io/noteco/animate-component',
+    link: 'https://RyanProMax.github.io/noteco/animate-component',
     out: true
   },
-  { name: 'Github', link: 'https://github.com/Ryan-zyy/interest', out: true }
+  { name: 'Github', link: 'https://github.com/RyanProMax/interest', out: true }
 ];
 
 function Header({ isNarrow, router }) {
