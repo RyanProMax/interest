@@ -23,11 +23,16 @@ export default function Example({ isMobile }) {
       name: 'Mini Cooper',
       imgSrc: `${domain}/images/mini-cooper.png`,
       path: '/example/mini-cooper'
+    },
+    {
+      name: 'Replace Background',
+      imgSrc: `${domain}/images/mini-cooper.png`,
+      path: '/example/replace-background'
     }
   ];
 
   return (
-    <div className='interest-example'>
+    <div className="interest-example">
       <Row gutter={[16, 16]} style={{ maxWidth: 1280, width: '100%' }}>
         {LIST.map((p, i) => (
           <Col key={i} xs={24} sm={12} lg={8} xl={6}>
