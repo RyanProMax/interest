@@ -1,4 +1,22 @@
 .interest-replace-background {
+  &__preview-wrapper {
+    display: inline-block;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      pointer-events: none;
+    }
+
+    &--loading::after {
+      backdrop-filter: blur(25px);
+    }
+  }
   &__preview {
     max-width: 320px;
     object-fit: cover;

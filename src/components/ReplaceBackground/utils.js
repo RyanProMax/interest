@@ -30,14 +30,32 @@ export const getImageData = async img => {
   [canvas.width, canvas.height] = [width, height];
   const ctx = canvas.getContext('2d');
   ctx.drawImage(image, 0, 0);
-  return transition(ctx.getImageData(0, 0, width, height).data);
+  return [transition(ctx.getImageData(0, 0, width, height).data), width, height];
 };
 
 export const useKmeans = vectors => {
   return new Promise((resolve, reject) => {
-    kmeans.clusterize(vectors, { k: 2 }, (err, res) => {
+    kmeans.clusterize(vectors, { k: 4 }, (err, res) => {
       if (err) reject(err);
       resolve(res);
     });
   });
+};
+
+export const toBase64 = (imageData, w, h) => {
+  imageData = imageData.flat(1);
+  const canvas = document.createElement('canvas');
+  [canvas.width, canvas.height] = [w, h];
+  const ctx = canvas.getContext('2d');
+  const _imageData = ctx.createImageData(w, h);
+  if (_imageData.data.set) {
+    _imageData.data.set(imageData);
+  } else {
+    // IE9
+    imageData.forEach(function (val, i) {
+      _imageData.data[i] = val;
+    });
+  }
+  ctx.putImageData(_imageData, 0, 0);
+  return canvas.toDataURL();
 };

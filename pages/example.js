@@ -26,7 +26,7 @@ export default function Example({ isMobile }) {
     },
     {
       name: 'Replace Background',
-      imgSrc: `${domain}/images/mini-cooper.png`,
+      imgSrc: `${domain}/images/replace-background.jpg`,
       path: '/example/replace-background'
     }
   ];
